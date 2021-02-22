@@ -1,5 +1,8 @@
 const dino = document.querySelector('.dino')
+const background = document.querySelector('.background')
+
 let isJumping = false //saber se esta pulando ou n
+let position = 0 //pulo
 
 //detecta botao space pressionado
 function handleKeyUp(event){
@@ -12,7 +15,6 @@ function handleKeyUp(event){
 
 //faz o dinossauro pular
     function jump(){
-        let position = 0
 
         isJumping = true
 
@@ -37,6 +39,37 @@ function handleKeyUp(event){
         },20)
 }
 
+//cria div cactus
+function createCactus(){
+    const cactus = document.createElement('div')
+    let cactusPosition = 1000
+    let randomTime = Math.random() * 6000
+
+    console.log(randomTime)
+
+    cactus.classList.add('cactus')
+    cactus.style.left = 1000 + 'px'
+    background.appendChild(cactus)
+
+    let leftInterval = setInterval(() => {
+
+        if(cactusPosition < -60){
+            clearInterval(leftInterval)
+            background.removeChild(cactus)
+        } else if(cactusPosition > 0 && cactusPosition < 60 && position < 60){
+            //game over
+            clearInterval(leftInterval)
+            document.body.innerHTML = '<h1 class="game-over">Fim de Jogo</h1>'
+        } else {
+            cactusPosition -= 10
+            cactus.style.left = cactusPosition + 'px'
+        }
+    },20)
+
+    setTimeout(createCactus, randomTime)
+}
+
+createCactus()
 document.addEventListener('keyup', handleKeyUp)
 
 console.log(dino)
